@@ -7,7 +7,7 @@ local TweenService = game:GetService("TweenService")
 
 -- Data ikan yang tersedia (dikelompokkan)
 local fishCategories = {
-    ["Shark🦈"] = {
+    ["Sharks"] = {
         "1x1x1 Comet Shark",
         "1x1x1x1 Shark",
         "Frostborn Shark",
@@ -21,7 +21,7 @@ local fishCategories = {
         "Pumpkin Carved Shark",
         "Zombie Shark"
     },
-    ["Monster🐙"] = {
+    ["Monsters"] = {
         "Ancient Lochness Monster",
         "Ancient Relic Crocodile",
         "Ancient Whale",
@@ -30,7 +30,7 @@ local fishCategories = {
         "Robot Kraken",
         "Robot Kraken Pink"
     },
-    ["Deep Fish🧜‍♂️"] = {
+    ["Special"] = {
         "Angrylion Fish",
         "Blackcap Basslet",
         "Bleekers Damsel",
@@ -98,7 +98,7 @@ Title.Name = "Title"
 Title.Size = UDim2.new(0.6, 0, 1, 0)
 Title.Position = UDim2.new(0, 10, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "Ambon Ewe Ariel Tatum🤤"
+Title.Text = "🎣 Auto Fishing Pro"
 Title.TextColor3 = Color3.fromRGB(100, 200, 255)
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 14
@@ -252,7 +252,7 @@ StartButton.Name = "StartButton"
 StartButton.Size = UDim2.new(0.48, 0, 1, 0)
 StartButton.Position = UDim2.new(0, 0, 0, 0)
 StartButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-StartButton.Text = "▶ START EWE"
+StartButton.Text = "▶ START"
 StartButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 StartButton.Font = Enum.Font.GothamBold
 StartButton.TextSize = 13
@@ -263,7 +263,7 @@ StopButton.Name = "StopButton"
 StopButton.Size = UDim2.new(0.48, 0, 1, 0)
 StopButton.Position = UDim2.new(0.52, 0, 0, 0)
 StopButton.BackgroundColor3 = Color3.fromRGB(80, 80, 100)
-StopButton.Text = "■ STOP EWE"
+StopButton.Text = "■ STOP"
 StopButton.TextColor3 = Color3.fromRGB(180, 180, 180)
 StopButton.Font = Enum.Font.GothamBold
 StopButton.TextSize = 13
