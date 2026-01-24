@@ -55,19 +55,19 @@ local FishDatabase = {
     ["Kardian Lava"] = {name="Kardian Lava", rarity="Mythical", weight=26},
     ["Kupu-Kupu Lava"] = {name="Kupu-Kupu Lava", rarity="Mythical", weight=24},
     ["Blueflame Ray"] = {name="Blueflame Ray", rarity="Mythical", weight=32},
-    ["Frostborn Shark"] = {name="Frostborn Shark", rarity="Secret", weight=45},
-    ["Fossilized Shark"] = {name="Fossilized Shark", rarity="Secret", weight=48},
-    ["Megalodon"] = {name="Megalodon", rarity="Secret", weight=60},
-    ["Purple Megalodon"] = {name="Purple Megalodon", rarity="Secret", weight=65},
-    ["Zombie Megalodon"] = {name="Zombie Megalodon", rarity="Secret", weight=70},
-    ["Ences Maja"] = {name="Ences Maja", rarity="Secret", weight=50},
-    ["El Maja"] = {name="El Maja", rarity="Secret", weight=52},
-    ["Ancient Lochness Monster"] = {name="Ancient Lochness Monster", rarity="Ancient", weight=90},
-    ["Ancient Lochness Lava"] = {name="Ancient Lochness Lava", rarity="Ancient", weight=95},
+    ["Frostborn Shark"] = {name="Frostborn Shark", rarity="Secret", weight=999},
+    ["Fossilized Shark"] = {name="Fossilized Shark", rarity="Secret", weight=997},
+    ["Megalodon"] = {name="Megalodon", rarity="Secret", weight=998},
+    ["Purple Megalodon"] = {name="Purple Megalodon", rarity="Secret", weight=979},
+    ["Zombie Megalodon"] = {name="Zombie Megalodon", rarity="Secret", weight=986},
+    ["Ences Maja"] = {name="Ences Maja", rarity="Secret", weight=990},
+    ["El Maja"] = {name="El Maja", rarity="Secret", weight=989},
+    ["Ancient Lochness Monster"] = {name="Secret Lochness Monster", rarity="Secret", weight=980},
+    ["Ancient Lochness Lava"] = {name="Secret Lochness Lava", rarity="Secret", weight=980},
 }
 
 --================ AUTO ADD NEW FISH =================
-local DEFAULT_FISH = {rarity="Unknown", weight=1}
+local DEFAULT_FISH = {rarity="Secret", weight=999}
 
 local FishAssets = ReplicatedStorage:WaitForChild("FishingSystem")
     :WaitForChild("Assets")
@@ -127,7 +127,7 @@ Instance.new("UICorner",Main).CornerRadius = UDim.new(0,14)
 -- HEADER
 local Header = Instance.new("TextLabel", Main)
 Header.Size = UDim2.new(1,0,0,32)
-Header.Text = "AUTO FISH MOBILE"
+Header.Text = "AMBON EWE TOKYO🥴😜"
 Header.Font = Enum.Font.GothamBold
 Header.TextSize = 14
 Header.TextColor3 = Color3.new(1,1,1)
@@ -179,8 +179,8 @@ local function Btn(text,y)
     return b
 end
 
-local AutoFishBtn = Btn("AUTO FISH",40)
-local AutoSellBtn = Btn("AUTO SELL",80)
+local AutoFishBtn = Btn("AUTO EWE😋",40)
+local AutoSellBtn = Btn("AUTO JUAL TOKYO🤤",80)
 local ModeBtn = Btn("MODE : SAFE",120)
 
 AutoFishBtn.MouseButton1Click:Connect(function()
