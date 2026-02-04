@@ -1,4 +1,4 @@
--- Auto Farm Fishing dengan GUI + Delay Manual
+-- Auto Farm Fishing dengan GUI + Delay Manual + Kordinat Dinamis
 -- Made by: AI Assistant
 
 local Player = game:GetService("Players").LocalPlayer
@@ -18,8 +18,8 @@ local isDragging = false
 local dragStartPos = nil
 local guiStartPos = nil
 local currentDelay = 0.5 -- Default delay
-local minDelay = 0.1 -- Minimum delay
-local maxDelay = 5.0 -- Maximum delay
+local minDelay = 0.001 -- Minimum delay
+local maxDelay = 3.0 -- Maximum delay
 
 -- Buat ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -31,8 +31,8 @@ screenGui.Parent = Player:WaitForChild("PlayerGui")
 -- Main Frame
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(0, 320, 0, 280) -- Diperbesar untuk fitur delay
-mainFrame.Position = UDim2.new(0.5, -160, 0.5, -140)
+mainFrame.Size = UDim2.new(0, 320, 0, 300) -- Diperbesar sedikit untuk info posisi
+mainFrame.Position = UDim2.new(0.5, -160, 0.5, -150)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 mainFrame.BorderSizePixel = 2
 mainFrame.BorderColor3 = Color3.fromRGB(0, 170, 255)
@@ -78,7 +78,7 @@ title.Name = "Title"
 title.Size = UDim2.new(0, 180, 1, 0)
 title.Position = UDim2.new(0, 10, 0, 0)
 title.BackgroundTransparency = 1
-title.Text = "Gunung Jule⛰️"
+title.Text = "AmbonXLonely🚯"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 16
@@ -287,11 +287,35 @@ for _, preset in ipairs({preset1, preset2, preset3}) do
     presetCorner.Parent = preset
 end
 
+-- Position Info Frame
+local positionFrame = Instance.new("Frame")
+positionFrame.Name = "PositionFrame"
+positionFrame.Size = UDim2.new(1, -20, 0, 40)
+positionFrame.Position = UDim2.new(0, 10, 0, 150)
+positionFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+positionFrame.Parent = contentFrame
+
+local positionCorner = Instance.new("UICorner")
+positionCorner.CornerRadius = UDim.new(0, 6)
+positionCorner.Parent = positionFrame
+
+local positionLabel = Instance.new("TextLabel")
+positionLabel.Name = "PositionLabel"
+positionLabel.Size = UDim2.new(1, -10, 1, 0)
+positionLabel.Position = UDim2.new(0, 5, 0, 0)
+positionLabel.BackgroundTransparency = 1
+positionLabel.Text = "📍 Position: Dynamic (Following Player)"
+positionLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
+positionLabel.Font = Enum.Font.Gotham
+positionLabel.TextSize = 11
+positionLabel.TextXAlignment = Enum.TextXAlignment.Center
+positionLabel.Parent = positionFrame
+
 -- Toggle Button
 local toggleBtn = Instance.new("TextButton")
 toggleBtn.Name = "ToggleBtn"
 toggleBtn.Size = UDim2.new(1, -20, 0, 40)
-toggleBtn.Position = UDim2.new(0, 10, 0, 150)
+toggleBtn.Position = UDim2.new(0, 10, 0, 200)
 toggleBtn.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
 toggleBtn.Text = "START FARMING"
 toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -307,7 +331,7 @@ toggleCorner.Parent = toggleBtn
 local statsFrame = Instance.new("Frame")
 statsFrame.Name = "StatsFrame"
 statsFrame.Size = UDim2.new(1, -20, 0, 60)
-statsFrame.Position = UDim2.new(0, 10, 0, 200)
+statsFrame.Position = UDim2.new(0, 10, 0, 250)
 statsFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 statsFrame.Parent = contentFrame
 
@@ -418,6 +442,29 @@ local fishCount = 0
 local startTime = 0
 local connection = nil
 
+-- Fungsi untuk mendapatkan posisi player yang tepat untuk fishing
+local function getFishingPosition()
+    local character = Player.Character
+    if character then
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            -- Ambil posisi player dan tambahkan offset untuk fishing
+            local playerPos = humanoidRootPart.Position
+            
+            -- Buat posisi fishing di depan player (bisa disesuaikan)
+            local lookVector = humanoidRootPart.CFrame.LookVector
+            local fishingOffset = Vector3.new(0, -1, -5) -- 5 unit di depan dan sedikit di bawah
+            
+            -- Rotasikan offset sesuai arah player
+            local rotatedOffset = humanoidRootPart.CFrame:VectorToWorldSpace(fishingOffset)
+            
+            return playerPos + rotatedOffset
+        end
+    end
+    -- Fallback ke posisi player jika tidak ada character
+    return Vector3.new(0, 0, 0)
+end
+
 -- Fungsi untuk update delay display
 local function updateDelayDisplay()
     currentDelayLabel.Text = string.format("Current Delay: %.1fs", currentDelay)
@@ -474,6 +521,13 @@ local function updateStats()
     end
 end
 
+-- Fungsi untuk update position display
+local function updatePositionDisplay()
+    local fishingPos = getFishingPosition()
+    positionLabel.Text = string.format("📍 Position: (%.1f, %.1f, %.1f)", 
+        fishingPos.X, fishingPos.Y, fishingPos.Z)
+end
+
 -- Fungsi untuk toggle farming
 local function toggleFarming()
     isFarming = not isFarming
@@ -493,9 +547,13 @@ local function toggleFarming()
         -- Mulai loop fishing dengan delay custom
         connection = RunService.Heartbeat:Connect(function()
             if isFarming then
+                -- Dapatkan posisi player saat ini
+                local fishingPos = getFishingPosition()
+                
+                -- Persiapkan args dengan posisi dinamis
                 local args = {
                     {
-                        hookPosition = vector.create(4506.8994140625, 1189.9971923828125, -552.2802124023438),
+                        hookPosition = fishingPos,
                         powerPercent = 0
                     }
                 }
@@ -505,6 +563,9 @@ local function toggleFarming()
                     FishGiver:FireServer(unpack(args))
                     fishCount = fishCount + 1
                     updateStats()
+                    
+                    -- Update position display
+                    updatePositionDisplay()
                 end)
                 
                 -- Tunggu sesuai delay yang di-set
@@ -513,6 +574,7 @@ local function toggleFarming()
         end)
         
         print("Auto fishing started! Delay: " .. currentDelay .. "s")
+        print("Using dynamic position following player")
     else
         -- Stop farming
         statusValue.Text = "OFF"
@@ -692,13 +754,18 @@ end)
 -- Update statistik secara berkala
 RunService.Heartbeat:Connect(function()
     updateStats()
+    
+    -- Update position display saat farming
+    if isFarming then
+        updatePositionDisplay()
+    end
 end)
 
 -- Info hotkey
 local hotkeyInfo = Instance.new("TextLabel")
 hotkeyInfo.Name = "HotkeyInfo"
 hotkeyInfo.Size = UDim2.new(1, -20, 0, 30)
-hotkeyInfo.Position = UDim2.new(0, 10, 0, 265)
+hotkeyInfo.Position = UDim2.new(0, 10, 0, 315)
 hotkeyInfo.BackgroundTransparency = 1
 hotkeyInfo.Text = "Hotkeys: Ctrl+F=Toggle, Ctrl+M=Minimize, Ctrl+D=Delay"
 hotkeyInfo.TextColor3 = Color3.fromRGB(150, 150, 150)
@@ -710,19 +777,23 @@ hotkeyInfo.Parent = contentFrame
 -- Inisialisasi
 updateDelayDisplay()
 setDelay(0.5) -- Set default delay dan highlight preset 2
+updatePositionDisplay() -- Tampilkan posisi awal
 
 print("==========================================")
-print("Auto Farm Fishing GUI v2.0 Loaded!")
+print("Auto Farm Fishing GUI v2.1 Loaded!")
 print("==========================================")
 print("Features:")
+print("- Dynamic Position (Following Player)")
 print("- Manual Delay Input (0.1s - 5.0s)")
 print("- 3 Preset Delays (0.1s, 0.5s, 1.0s)")
 print("- Drag & Drop GUI")
 print("- Minimize/Maximize")
-print("- Real-time Statistics")
+print("- Real-time Statistics & Position Display")
 print("==========================================")
 print("Hotkeys:")
 print("Ctrl+F = Toggle Farming")
 print("Ctrl+M = Minimize GUI")
 print("Ctrl+D = Focus Delay Input")
+print("==========================================")
+print("Note: Fishing position now follows player!")
 print("==========================================")
